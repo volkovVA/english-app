@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Books from '@/components/Books'
-import Words from '@/components/Words'
-import Signin from '@/components/Signin'
-import Signup from '@/components/Signup'
-import Profile from '@/components/Profile'
+import Home from '@/views/Home.vue'
+import Books from '@/views/Books.vue'
+import Words from '@/views/Words.vue'
+import Signin from '@/views/Signin.vue'
+import Signup from '@/views/Signup.vue'
+import Profile from '@/views/Profile.vue'
+import AuthGuard from './auth-guard'
 
 Vue.use(VueRouter)
 
@@ -28,7 +29,8 @@ Vue.use(VueRouter)
   {
     path: '/profile',
     name: 'profile',
-    component: Profile
+    component: Profile,
+    beforeEnter: AuthGuard
   },
   {
     path: '/signin',

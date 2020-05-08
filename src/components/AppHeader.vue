@@ -21,6 +21,37 @@
             <v-icon left v-html="item.icon"></v-icon>
             {{ item.title }}
           </v-btn>
+          <v-btn
+            text
+            v-if="isUserLoggedIn"
+            @click.stop="dialog = true"
+          >
+            <v-icon left>exit_to_app</v-icon>
+            Выйти
+          </v-btn>
+          <v-dialog v-model="dialog" max-width="260">
+            <v-card>
+              <v-card-title class="headline">На сегодня хватит английского?</v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="green darken-1"
+                  text
+                  @click.stop="dialog = false"
+                >
+                  Нет
+                </v-btn>
+                <v-btn
+                  color="green darken-1"
+                  text
+                  @click.stop="dialog = false"
+                  @click="signOut"
+                >
+                  Да
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+    </v-dialog>
       </v-toolbar-items>
     </v-app-bar>
   </div>
@@ -30,36 +61,43 @@
 export default {
   data() {
     return {
-      drawer: false
+      drawer: false,
+      dialog: false
     }
   },
   computed: {
+    isUserLoggedIn () {
+      return this.$store.getters.isUserLoggedIn
+    },
     menuItems() {
-      return [
+      if (this.isUserLoggedIn) {
+        return [
+          {
+            icon: 'visibility',
+            title: 'Читать',
+            route: '/books',
+          },
+          // {
+          //   icon: 'extension',
+          //   title: 'Учить слова',
+          //   route: '/words',
+          // },
+          {
+            icon: 'account_circle',
+            title: 'Мой кабинет',
+            route: '/profile',
+          }
+        ]
+      } return [
         {
           icon: 'visibility',
           title: 'Читать',
           route: '/books',
         },
         {
-          icon: 'extension',
-          title: 'Учить слова',
-          route: '/words',
-        },
-        {
-          icon: 'account_circle',
-          title: 'Мой кабинет',
-          route: '/profile',
-        },
-        {
-          icon: 'exit_to_app',
-          title: 'Выйти',
-          route: '/logout',
-        },
-        {
           icon: 'input',
           title: 'Войти',
-          route: '/sign',
+          route: '/signin',
         },
         {
           icon: 'lock_open',
@@ -67,6 +105,12 @@ export default {
           route: '/signup',
         }
       ]
+
+    }
+  },
+  methods: {
+    signOut() {
+      this.$store.dispatch('SIGN_OUT')
     }
   }
 }
