@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <books-list></books-list>
@@ -14,5 +15,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
